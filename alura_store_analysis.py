@@ -132,3 +132,41 @@ if fretes_medios:
     plt.tight_layout()
     plt.show()
 
+
+# Gráfico de Barras: Faturamento total por loja
+
+plt.figure(figsize=(8, 5))
+plt.bar(faturamentos.keys(), faturamentos.values(), color='seagreen')
+plt.title('Faturamento Total por Loja')
+plt.xlabel('Loja')
+plt.ylabel('Faturamento (R$)')
+plt.grid(axis='y', linestyle='--', alpha=0.5)
+plt.tight_layout()
+plt.show()
+
+# Gráfico de Pizza: Distribuição de categorias da Loja1
+
+if 'categoria_do_produto' in dados_lojas['Loja1'].columns:
+    categorias = dados_lojas['Loja1']['categoria_do_produto'].value_counts()
+    plt.figure(figsize=(7, 7))
+    plt.pie(categorias, labels=categorias.index, autopct='%1.1f%%', startangle=140)
+    plt.title('Distribuição de Categorias - Loja1')
+    plt.axis('equal')
+    plt.tight_layout()
+    plt.show()
+
+# Gráfico de Linhas: Custo médio de frete por loja
+
+fretes_medios = {
+    loja: df['frete'].mean()
+    for loja, df in dados_lojas.items() if 'frete' in df.columns
+}
+
+plt.figure(figsize=(8, 5))
+plt.plot(list(fretes_medios.keys()), list(fretes_medios.values()), marker='o', linestyle='-', color='darkorange')
+plt.title('Custo Médio de Frete por Loja')
+plt.xlabel('Loja')
+plt.ylabel('Frete Médio (R$)')
+plt.grid(True)
+plt.tight_layout()
+plt.show()
