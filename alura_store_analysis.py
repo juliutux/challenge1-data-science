@@ -80,3 +80,39 @@ if avaliacoes_medias:
     plt.grid(axis='y', linestyle='--', alpha=0.5)
     plt.tight_layout()
     plt.show()
+
+# Identificando produtos mais e menos vendidos por loja
+print("\nProdutos mais e menos vendidos por loja:")
+
+for loja, df in dados_lojas.items():
+    if 'produto' in df.columns:
+        vendas_produtos = df['produto'].value_counts()
+        
+        mais_vendido = vendas_produtos.idxmax()
+        menos_vendido = vendas_produtos.idxmin()
+        
+        print(f"\n🔹 {loja}")
+        print(f"Produto mais vendido: {mais_vendido} (Quantidade: {vendas_produtos.max()})")
+        print(f"Produto menos vendido: {menos_vendido} (Quantidade: {vendas_produtos.min()})")
+        
+        # Visualização das vendas por produto
+        plt.figure(figsize=(10, 5))
+        vendas_produtos.head(10).plot(kind='bar', color='darkgreen')
+        plt.title(f'Produtos Mais Vendidos - {loja}')
+        plt.xlabel('Produto')
+        plt.ylabel('Quantidade Vendida')
+        plt.xticks(rotation=45)
+        plt.grid(axis='y', linestyle='--', alpha=0.5)
+        plt.tight_layout()
+        plt.show()
+
+         # Gráfico: Produtos menos vendidos
+        plt.figure(figsize=(10, 5))
+        vendas_produtos.tail(10).sort_values().plot(kind='bar', color='red')
+        plt.title(f'Produtos Menos Vendidos - {loja}')
+        plt.xlabel('Produto')
+        plt.ylabel('Quantidade Vendida')
+        plt.xticks(rotation=45)
+        plt.grid(axis='y', linestyle='--', alpha=0.5)
+        plt.tight_layout()
+        plt.show()
