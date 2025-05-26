@@ -21,3 +21,27 @@ faturamentos = {loja: df['Preço'].sum() for loja, df in dados_lojas.items()}
 print("\nFaturamento por loja:")
 for loja, valor in faturamentos.items():
     print(f"{loja}: R$ {valor:,.2f}")
+
+
+# Gráfico de barras do faturamento
+plt.figure(figsize=(8, 5))
+plt.bar(faturamentos.keys(), faturamentos.values(), color='teal')
+plt.title('Faturamento Total por Loja')
+plt.xlabel('Loja')
+plt.ylabel('Faturamento (R$)')
+plt.grid(axis='y', linestyle='--', alpha=0.5)
+plt.tight_layout()
+plt.show()
+
+
+# Quantidade de produtos vendidos por categoria em cada loja
+for loja, df in dados_lojas.items():
+    categoria_counts = df['Categoria do Produto'].value_counts()
+    plt.figure(figsize=(8, 5))
+    categoria_counts.plot(kind='bar', color='slateblue')
+    plt.title(f'Vendas por Categoria - {loja}')
+    plt.xlabel('Categoria')
+    plt.ylabel('Quantidade de Vendas')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
