@@ -116,3 +116,19 @@ for loja, df in dados_lojas.items():
         plt.grid(axis='y', linestyle='--', alpha=0.5)
         plt.tight_layout()
         plt.show()
+
+# Gráfico de comparação do frete médio por loja
+fretes_medios = {
+    loja: df['frete'].mean()
+    for loja, df in dados_lojas.items() if 'frete' in df.columns
+}
+
+if fretes_medios:
+    plt.figure(figsize=(8, 4))
+    sns.barplot(x=list(fretes_medios.keys()), y=list(fretes_medios.values()), palette='Blues')
+    plt.title("Custo Médio de Frete por Loja")
+    plt.ylabel("Frete Médio (R$)")
+    plt.grid(axis='y', linestyle='--', alpha=0.5)
+    plt.tight_layout()
+    plt.show()
+
