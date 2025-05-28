@@ -60,7 +60,7 @@ for loja, df in dados_lojas.items():
         print(f"A loja {loja} não possui a coluna 'categoria_do_produto'")
 
 # Média das avaliações
-print("\nMédia das avaliações por loja:")
+print("\nMédia das avaliações da compra por loja:")
 avaliacoes_medias = {}
 for loja, df in dados_lojas.items():
     if 'avaliacao_da_compra' in df.columns:
@@ -73,8 +73,9 @@ for loja, df in dados_lojas.items():
 # Gráfico de médias de avaliação
 if avaliacoes_medias:
     plt.figure(figsize=(8, 4))
-    sns.barplot(x=list(avaliacoes_medias.keys()), y=list(avaliacoes_medias.values()), palette='viridis')
-    plt.title("Média de Avaliações por Loja")
+    avaliacoes_ordenadas = dict(sorted(avaliacoes_medias.items(), key=lambda item: item[1], reverse=True))
+    sns.barplot(x=list(avaliacoes_ordenadas.keys()), y=list(avaliacoes_ordenadas.values()), palette='viridis')
+    plt.title("Média de Avaliações da compra por Loja")
     plt.ylabel("Avaliação Média")
     plt.ylim(0, 5)
     plt.grid(axis='y', linestyle='--', alpha=0.5)
@@ -120,13 +121,14 @@ for loja, df in dados_lojas.items():
 
 # Gráfico de comparação do frete médio por loja
 fretes_medios = {
-    loja: df['frete'].mean()
+    loja: df['frete'].dropna().mean()
     for loja, df in dados_lojas.items() if 'frete' in df.columns
 }
 
 if fretes_medios:
     plt.figure(figsize=(8, 4))
-    sns.barplot(x=list(fretes_medios.keys()), y=list(fretes_medios.values()), palette='Blues')
+    fretes_ordenados = dict(sorted(fretes_medios.items(), key=lambda item: item[1]))
+    sns.barplot(x=list(fretes_ordenados.keys()), y=list(fretes_ordenados.values()), palette='Blues')
     plt.title("Custo Médio de Frete por Loja")
     plt.ylabel("Frete Médio (R$)")
     plt.grid(axis='y', linestyle='--', alpha=0.5)
@@ -134,7 +136,6 @@ if fretes_medios:
     plt.show()
 
 # Gráfico de Pizza: Distribuição de categorias da Loja1
-
 if 'categoria_do_produto' in dados_lojas['Loja1'].columns:
     categorias = dados_lojas['Loja1']['categoria_do_produto'].value_counts()
     plt.figure(figsize=(7, 7))
@@ -145,7 +146,6 @@ if 'categoria_do_produto' in dados_lojas['Loja1'].columns:
     plt.show()
 
 # Gráfico de Linhas: Custo médio de frete por loja
-
 fretes_medios = {
     loja: df['frete'].mean()
     for loja, df in dados_lojas.items() if 'frete' in df.columns
