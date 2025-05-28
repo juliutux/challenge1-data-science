@@ -117,6 +117,7 @@ for loja, df in dados_lojas.items():
         plt.tight_layout()
         plt.show()
 
+
 # Gráfico de comparação do frete médio por loja
 fretes_medios = {
     loja: df['frete'].mean()
@@ -131,18 +132,6 @@ if fretes_medios:
     plt.grid(axis='y', linestyle='--', alpha=0.5)
     plt.tight_layout()
     plt.show()
-
-
-# Gráfico de Barras: Faturamento total por loja
-
-plt.figure(figsize=(8, 5))
-plt.bar(faturamentos.keys(), faturamentos.values(), color='seagreen')
-plt.title('Faturamento Total por Loja')
-plt.xlabel('Loja')
-plt.ylabel('Faturamento (R$)')
-plt.grid(axis='y', linestyle='--', alpha=0.5)
-plt.tight_layout()
-plt.show()
 
 # Gráfico de Pizza: Distribuição de categorias da Loja1
 
@@ -168,5 +157,27 @@ plt.title('Custo Médio de Frete por Loja')
 plt.xlabel('Loja')
 plt.ylabel('Frete Médio (R$)')
 plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+# Heatmap: Avaliação Média por Categoria por Loja
+
+# Criar dicionário para armazenar as médias por categoria
+avaliacoes_categoria_loja = {}
+
+for loja, df in dados_lojas.items():
+    if 'avaliacao_da_compra' in df.columns and 'categoria_do_produto' in df.columns:
+        medias = df.groupby('categoria_do_produto')['avaliacao_da_compra'].mean()
+        avaliacoes_categoria_loja[loja] = medias
+
+# Combinar tudo em um único DataFrame
+df_heatmap = pd.DataFrame(avaliacoes_categoria_loja)
+
+# Preencher valores ausentes com 0 ou outro valor (ex: np.nan)
+plt.figure(figsize=(10, 6))
+sns.heatmap(df_heatmap, annot=True, cmap='coolwarm', fmt=".2f", linewidths=0.5)
+plt.title('Heatmap - Avaliação Média por Categoria por Loja')
+plt.xlabel('Loja')
+plt.ylabel('Categoria do Produto')
 plt.tight_layout()
 plt.show()
